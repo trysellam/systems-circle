@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Curriculum — The Systems Circle</title>
+<meta name="description" content="Six months of structured systems, built one at a time. See exactly what you will build inside The Systems Circle.">
+<meta name="theme-color" content="#085041">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#0F6E56;--pl:#E1F5EE;--pd:#085041;
+  --ac:#EF9F27;--al:#FAEEDA;
+  --tx:#1C1C1A;--tm:#6B6B67;
+  --bd:rgba(0,0,0,0.08);--bdh:rgba(0,0,0,0.15);
+  --bg:#FAFAF8;--card:#fff;
+  --ok:#1D9E75;--r:12px;--rs:8px
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);font-size:16px;line-height:1.6}
+a{color:var(--p);text-decoration:none}
+img{max-width:100%;display:block}
+
+/* NAV */
+.ln{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;position:sticky;top:0;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);z-index:100}
+.logo{font-size:17px;font-weight:500;letter-spacing:-.01em}
+.logo span{color:var(--p)}
+.ln-r{display:flex;align-items:center;gap:12px}
+.ln-link{font-size:14px;color:var(--tm);background:none;border:none;cursor:pointer;font-family:inherit;transition:color .15s;text-decoration:none}
+.ln-link:hover{color:var(--p)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;border-radius:var(--rs);font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;border:none;transition:all .15s;text-decoration:none}
+.btn-p{background:var(--p);color:#fff}.btn-p:hover{background:var(--pd)}
+.btn-sm{padding:8px 16px;font-size:14px}
+
+/* PAGE HEADER */
+.pg-hero{max-width:680px;margin:0 auto;padding:56px 24px 40px;text-align:center}
+.pg-hero .ltag{display:inline-block;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:500;margin-bottom:20px;background:var(--al);color:#854F0B}
+.pg-hero h1{font-size:clamp(26px,4.5vw,42px);font-weight:500;line-height:1.2;letter-spacing:-.02em;margin-bottom:16px}
+.pg-hero p{font-size:17px;color:var(--tm);line-height:1.7;max-width:500px;margin:0 auto}
+
+/* BODY */
+.sc-body{max-width:720px;margin:0 auto;padding:0 24px 80px}
+
+/* STAGE HEADER */
+.stage-hd{padding:40px 0 16px}
+.stage-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--p);margin-bottom:6px}
+.stage-title{font-size:clamp(18px,2.8vw,24px);font-weight:500;color:var(--tx);margin-bottom:4px}
+.stage-desc{font-size:14px;color:var(--tm);line-height:1.6}
+
+/* MONTH CARDS */
+.month-list{display:flex;flex-direction:column;gap:10px}
+
+.month-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:border-color .2s}
+.month-card:hover{border-color:var(--bdh)}
+.month-card.open{border-color:var(--p)}
+
+.month-trigger{display:flex;align-items:flex-start;gap:16px;padding:22px 24px;cursor:pointer;width:100%;background:none;border:none;font-family:inherit;text-align:left}
+.month-trigger:focus-visible{outline:2px solid var(--p);outline-offset:-2px}
+
+.month-num{font-size:11px;font-weight:600;color:var(--p);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;padding-top:3px;min-width:60px}
+
+.month-meta{flex:1}
+.month-name{font-size:17px;font-weight:500;color:var(--tx);margin-bottom:4px;line-height:1.3}
+.month-hook{font-size:14px;color:var(--tm);line-height:1.5}
+
+.month-icon{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;margin-top:2px}
+.month-card.open .month-icon{background:var(--p);border-color:var(--p)}
+.month-icon svg{transition:transform .25s}
+.month-card.open .month-icon svg{transform:rotate(45deg)}
+.month-icon svg path{transition:stroke .2s}
+.month-card.open .month-icon svg path{stroke:#fff}
+
+/* EXPANDED CONTENT */
+.month-body{display:none;padding:0 24px 24px 100px}
+.month-card.open .month-body{display:block}
+
+.month-body p{font-size:15px;color:var(--tm);line-height:1.8;margin-bottom:14px}
+.month-body p:last-child{margin-bottom:0}
+
+.month-outcome{background:var(--pl);border-radius:var(--rs);padding:16px 20px;margin:16px 0}
+.month-outcome p{font-size:14px;font-weight:500;color:var(--pd);margin:0;line-height:1.6}
+.month-outcome-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--p);margin-bottom:6px}
+
+.tool-badge{display:inline-flex;align-items:center;gap:8px;background:var(--al);border-radius:var(--rs);padding:10px 14px;margin-top:16px}
+.tool-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0}
+.tool-badge p{font-size:13px;font-weight:500;color:#6B4200;margin:0;line-height:1.4}
+
+/* STAGE THREE */
+.stage-three{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:28px 28px;margin-top:16px}
+.stage-three-hd{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.stage-three-tag{background:var(--p);color:#fff;font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.stage-three h3{font-size:18px;font-weight:500}
+.stage-three p{font-size:15px;color:var(--tm);line-height:1.8;margin-bottom:12px}
+.stage-three p:last-child{margin-bottom:0}
+
+/* DIVIDER */
+.sc-divider{border:none;border-top:1px solid var(--bd);margin:48px 0 0}
+
+/* TESTIMONIAL SECTION */
+.testi-section{padding:56px 0 0}
+.testi-section-hd{text-align:center;margin-bottom:36px}
+.testi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--p);margin-bottom:10px}
+.testi-section-hd h2{font-size:clamp(20px,3vw,28px);font-weight:500;line-height:1.3}
+
+/* SLIDER */
+.slider-wrap{overflow:hidden;position:relative;width:100vw;left:50%;transform:translateX(-50%);padding:8px 0 32px}
+.slider-wrap::before,.slider-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.slider-wrap::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
+.slider-wrap::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+
+.slider-track{display:flex;gap:20px;animation:slide 32s linear infinite;width:max-content}
+.slider-track:hover{animation-play-state:paused}
+
+@keyframes slide{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+.testi-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:24px 28px;width:380px;flex-shrink:0}
+.testi-role{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--p);margin-bottom:4px}
+.testi-name{font-size:16px;font-weight:500;margin-bottom:2px}
+.testi-sub{font-size:13px;color:var(--tm);margin-bottom:16px;font-weight:400}
+.testi-result{font-size:13px;font-weight:600;color:var(--p);margin-bottom:14px;display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+.testi-result::before{content:'→';flex-shrink:0}
+.testi-body{font-size:14px;color:var(--tm);line-height:1.7;margin-bottom:16px}
+.testi-quote{font-size:15px;color:var(--tx);font-style:italic;line-height:1.6;border-left:3px solid var(--p);padding-left:14px}
+
+/* CTA */
+.sc-cta-block{background:var(--pd);border-radius:var(--r);padding:48px 32px;text-align:center;margin-top:56px}
+.sc-cta-block h2{font-size:clamp(20px,3vw,28px);font-weight:500;color:#fff;margin-bottom:12px}
+.sc-cta-block p{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:28px;line-height:1.6;max-width:420px;margin-left:auto;margin-right:auto;margin-bottom:28px}
+.sc-cta-note{font-size:13px;color:rgba(255,255,255,.45);margin-top:14px}
+.btn-a{background:var(--ac);color:#fff}.btn-a:hover{background:#D4880A}
+
+/* FOOTER */
+.sc-page-ft{text-align:center;padding:28px 24px;font-size:13px;color:var(--tm);border-top:1px solid var(--bd);margin-top:0}
+.sc-page-ft a{color:var(--tm)}
+.sc-page-ft a:hover{color:var(--p)}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .month-body{padding:0 20px 20px 20px}
+  .month-num{min-width:auto}
+  .sc-cta-block{padding:36px 24px}
+  .testi-card{width:310px}
+  .stage-hd{padding:32px 0 12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="ln">
+  <a class="logo" href="https://thesystemscircle.com">The Systems <span>Circle</span></a>
+  <div class="ln-r">
+    <a class="ln-link" href="https://dailyos.thesystemscircle.com">Try The Daily OS →</a>
+    <button class="btn btn-p btn-sm" onclick="window.open('https://forms.gle/cbwuqjFgdoruU1416','_blank')">Apply now</button>
+  </div>
+</nav>
+
+<div class="pg-hero">
+  <div class="ltag">What you will build, month by month</div>
+  <h1>The Curriculum</h1>
+  <p>Six systems, built one at a time. Each month adds a piece. By the end of Stage One, you have a complete income system. Leaving at any point means leaving mid-build.</p>
+</div>
+
+<div class="sc-body">
+
+  <!-- STAGE ONE -->
+  <div class="stage-hd">
+    <div class="stage-label">Stage One · Months 1 to 3</div>
+    <div class="stage-title">The Foundation</div>
+    <div class="stage-desc">You enter with expertise and inconsistent income. You leave with a functioning income system — a clear offer, a structured price, and a repeatable way to attract the right clients.</div>
+  </div>
+
+  <div class="month-list">
+
+    <!-- MONTH 1 -->
+    <div class="month-card" id="m1">
+      <button class="month-trigger" onclick="toggle('m1')" aria-expanded="false">
+        <span class="month-num">Month 1</span>
+        <div class="month-meta">
+          <div class="month-name">Offer Architecture</div>
+          <div class="month-hook">Define what you are selling, who it is for, and what outcome it delivers.</div>
+        </div>
+        <div class="month-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="#6B6B67" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </button>
+      <div class="month-body">
+        <p>No income system works without a clear offer at the centre. Members who skip this step or get it wrong spend months fixing the consequences downstream. Month 1 eliminates that problem before it starts.</p>
+        <p>You will work through the conceptual framework for a self-sufficient offer, then follow a structured implementation guide to define your offer with enough clarity that the right person immediately understands why they need it.</p>
+        <div class="month-outcome">
+          <div class="month-outcome-label">By the end of Month 1</div>
+          <p>You are not still figuring out what you sell. You know — and you can articulate it clearly enough that the right person immediately says yes.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTH 2 -->
+    <div class="month-card" id="m2">
+      <button class="month-trigger" onclick="toggle('m2')" aria-expanded="false">
+        <span class="month-num">Month 2</span>
+        <div class="month-meta">
+          <div class="month-name">Pricing and Monetisation Logic</div>
+          <div class="month-hook">Price your expertise based on the value you deliver, not the hours you work.</div>
+        </div>
+        <div class="month-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="#6B6B67" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </button>
+      <div class="month-body">
+        <p>Most professionals price by comparison — they look at what others charge and pick a number nearby. The result is a price that has no connection to the actual value of the work. Month 2 replaces that guesswork with a structured approach to pricing from outcomes.</p>
+        <p>You will build a pricing structure that reflects what your expertise is actually worth and learn to defend it with confidence. The shift from time-based pricing to value-based pricing is one of the highest-leverage changes a professional can make — and it starts here.</p>
+        <div class="month-outcome">
+          <div class="month-outcome-label">By the end of Month 2</div>
+          <p>You have moved from guessing what to charge to understanding what your expertise is worth — and pricing from that position.</p>
+        </div>
+        <div class="tool-badge">
+          <div class="tool-badge-dot"></div>
+          <p>Includes full access to the <strong>Worth Engine</strong> — a standalone paid tool included in your membership. It calculates pricing based on the outcomes you create, not market comparison or hourly rates.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTH 3 -->
+    <div class="month-card" id="m3">
+      <button class="month-trigger" onclick="toggle('m3')" aria-expanded="false">
+        <span class="month-num">Month 3</span>
+        <div class="month-meta">
+          <div class="month-name">Client Acquisition Systems</div>
+          <div class="month-hook">Find your ideal clients, qualify them, and move them to a signed engagement — online and offline.</div>
+        </div>
+        <div class="month-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="#6B6B67" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </button>
+      <div class="month-body">
+        <p>Most client acquisition systems are built entirely around digital channels. This one is not. More than 60% of the results generated through this methodology come from structured offline activity — the kind that most professionals are leaving entirely on the table.</p>
+        <p>The system covers four areas: identifying where your ideal clients spend their time and establishing your presence there; converting attention into qualified leads through a built-in scoring system that alerts you only when a serious prospect arrives; managing relationships and moving prospects through the pipeline with structured outreach; and closing engagements through proven sales conversations, scripts, and onboarding processes.</p>
+        <div class="month-outcome">
+          <div class="month-outcome-label">By the end of Month 3</div>
+          <p>You are not waiting for referrals or relying on random visibility. You have a system — online and offline — that finds, qualifies, and converts the right clients.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /month-list -->
+
+  <!-- STAGE TWO -->
+  <div class="stage-hd">
+    <div class="stage-label">Stage Two · Months 4 to 6</div>
+    <div class="stage-title">The Build</div>
+    <div class="stage-desc">You have the foundation. Stage Two adds the systems that reduce your dependency on direct time and effort — so the business does not collapse when you step back.</div>
+  </div>
+
+  <div class="month-list">
+
+    <!-- MONTH 4 -->
+    <div class="month-card" id="m4">
+      <button class="month-trigger" onclick="toggle('m4')" aria-expanded="false">
+        <span class="month-num">Month 4</span>
+        <div class="month-meta">
+          <div class="month-name">Delivery and Operations Systems</div>
+          <div class="month-hook">Build a delivery process that does not require reinventing the wheel for every client.</div>
+        </div>
+        <div class="month-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="#6B6B67" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </button>
+      <div class="month-body">
+        <p>Every professional who earns from their expertise faces the same operational problem: the work is good but the process around it is improvised. Each client engagement starts from scratch. Time leaks everywhere. Quality is inconsistent.</p>
+        <p>Month 4 systematises how you deliver your work. You will build a repeatable process that ensures every client gets a consistent, professional experience — while you get your time back and the ability to scale without adding proportional effort.</p>
+        <div class="month-outcome">
+          <div class="month-outcome-label">By the end of Month 4</div>
+          <p>Your delivery is systemised. Clients get consistency. You get capacity.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTH 5 -->
+    <div class="month-card" id="m5">
+      <button class="month-trigger" onclick="toggle('m5')" aria-expanded="false">
+        <span class="month-num">Month 5</span>
+        <div class="month-meta">
+          <div class="month-name">Revenue Clarity and Financial Systems</div>
+          <div class="month-hook">Manage what your income system generates — with intention, not reaction.</div>
+        </div>
+        <div class="month-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="#6B6B67" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </button>
+      <div class="month-body">
+        <p>By Month 5, money is coming in with more consistency. The problem most professionals face at this stage is not earning — it is managing. Income from multiple sources, in different amounts, arriving at different times. No clear picture. No plan. Just the vague guilt of knowing more should be happening with it.</p>
+        <p>Month 5 replaces that with a structured system for allocating every unit of income — across expenses, investment, savings, and goals. You will have a complete financial picture in one view, and a plan that moves your financial position forward rather than keeping it stable.</p>
+        <div class="month-outcome">
+          <div class="month-outcome-label">By the end of Month 5</div>
+          <p>Every naira coming in has a name and a plan. You can see in one view whether your financial position is improving — because it is.</p>
+        </div>
+        <div class="tool-badge">
+          <div class="tool-badge-dot"></div>
+          <p>Includes full access to the <strong>Financial OS</strong> — a standalone paid tool included in your membership. Built for professionals earning from more than one source, across currencies. Handles income allocation, windfall management, emergency reserves, and financial goal tracking.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MONTH 6 -->
+    <div class="month-card" id="m6">
+      <button class="month-trigger" onclick="toggle('m6')" aria-expanded="false">
+        <span class="month-num">Month 6</span>
+        <div class="month-meta">
+          <div class="month-name">Visibility and Authority Systems</div>
+          <div class="month-hook">Build consistent presence that attracts clients without depending on constant output.</div>
+        </div>
+        <div class="month-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="#6B6B67" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </button>
+      <div class="month-body">
+        <p>Visibility built on volume is not sustainable. Professionals who post constantly to stay relevant are not building authority — they are building dependency on the content treadmill. Month 6 builds a different kind of visibility: one that is methodical, positioned, and compounding over time.</p>
+        <p>The framework taught in this month is built directly from the approach that built the platform behind The Systems Circle — the exact methodology used to attract the right clients, establish authority in a specific space, and generate consistent inbound demand without constant content output.</p>
+        <div class="month-outcome">
+          <div class="month-outcome-label">By the end of Month 6</div>
+          <p>You are not scrambling to stay visible. You have a repeatable system for building presence — and it attracts the right clients, not just attention.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /month-list -->
+
+  <!-- STAGE THREE -->
+  <div class="stage-hd">
+    <div class="stage-label">Stage Three · Month 7 onwards</div>
+    <div class="stage-title">The Scale</div>
+    <div class="stage-desc">There is no fixed endpoint here.</div>
+  </div>
+
+  <div class="stage-three">
+    <p>Each month introduces a system focused on growth beyond what Stages One and Two built. Topics include team and delegation systems, designing multiple income streams, productising expertise into scalable offers, and building income assets that generate revenue without your active delivery.</p>
+    <p>This is also where the most engaged members naturally surface as candidates for direct access to Chibuzor. Members who reach Stage Three and want more — a 1:1 partnership, a done-for-you engagement, a full revenue system built around their specific situation — find that the pathway from community to premium access is organic, not a hard sell.</p>
+    <p>You have spent six months seeing how Chibuzor thinks. By this point, you already know whether working directly together makes sense.</p>
+  </div>
+
+  <hr class="sc-divider">
+
+  <!-- TESTIMONIALS -->
+  <div class="testi-section">
+    <div class="testi-section-hd">
+      <div class="testi-label">What others say</div>
+      <h2>The people who have been in the room</h2>
+    </div>
+  </div>
+
+</div><!-- /sc-body -->
+
+<!-- SLIDER — full width -->
+<div class="slider-wrap">
+  <div class="slider-track" id="sliderTrack">
+
+    <!-- Card 1 -->
+    <div class="testi-card">
+      <div class="testi-role">Joshua · Joshua Knows Solar</div>
+      <div class="testi-name">Electrical Engineer</div>
+      <div class="testi-sub">→ Solar Brand Founder</div>
+      <div class="testi-result">Generating leads from across the world. Millions in monthly revenue within three months of execution.</div>
+      <div class="testi-body">Joshua had years of expertise but no clarity on how to package it into something the market would pay for consistently. He had tried other consultants. Nothing gave him the direction he needed. After working with Chibuzor, he had a brand engineering document, a clear path, and an implementation guide built specifically around his expertise.</div>
+      <div class="testi-quote">"I would have still been roaming around, looking for which path to choose, combining many things. Thank you."</div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="testi-card">
+      <div class="testi-role">Temitope · Real Estate Consultant</div>
+      <div class="testi-name">2,000 Manual Lead Reviews</div>
+      <div class="testi-sub">→ Fully Automated System</div>
+      <div class="testi-result">A fully automated lead scoring system that evaluates every lead and alerts her only when a serious one arrives.</div>
+      <div class="testi-body">Temitope was getting leads. The problem was she had no way of knowing which ones were worth her time without reviewing every single one manually — up to 2,000 at a time. After working with Chibuzor, she had a system built on Airtable that does the qualification for her. She did not just get a system. She learnt how to build it — and walked away with a certification.</div>
+      <div class="testi-quote">"Why am I feeling like you want to let go of me like this. I had struggled with this for so long. Thank you for making it happen."</div>
+    </div>
+
+    <!-- Duplicate set for seamless loop -->
+    <div class="testi-card">
+      <div class="testi-role">Joshua · Joshua Knows Solar</div>
+      <div class="testi-name">Electrical Engineer</div>
+      <div class="testi-sub">→ Solar Brand Founder</div>
+      <div class="testi-result">Generating leads from across the world. Millions in monthly revenue within three months of execution.</div>
+      <div class="testi-body">Joshua had years of expertise but no clarity on how to package it into something the market would pay for consistently. He had tried other consultants. Nothing gave him the direction he needed. After working with Chibuzor, he had a brand engineering document, a clear path, and an implementation guide built specifically around his expertise.</div>
+      <div class="testi-quote">"I would have still been roaming around, looking for which path to choose, combining many things. Thank you."</div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-role">Temitope · Real Estate Consultant</div>
+      <div class="testi-name">2,000 Manual Lead Reviews</div>
+      <div class="testi-sub">→ Fully Automated System</div>
+      <div class="testi-result">A fully automated lead scoring system that evaluates every lead and alerts her only when a serious one arrives.</div>
+      <div class="testi-body">Temitope was getting leads. The problem was she had no way of knowing which ones were worth her time without reviewing every single one manually — up to 2,000 at a time. After working with Chibuzor, she had a system built on Airtable that does the qualification for her. She did not just get a system. She learnt how to build it — and walked away with a certification.</div>
+      <div class="testi-quote">"Why am I feeling like you want to let go of me like this. I had struggled with this for so long. Thank you for making it happen."</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="sc-body">
+
+  <!-- CTA -->
+  <div class="sc-cta-block">
+    <h2>This is what you are joining.</h2>
+    <p>Six systems. Two tools included. A peer pod. One live session a month. And a room full of people building the same thing you are.</p>
+    <button class="btn btn-a" style="font-size:16px;padding:14px 32px" onclick="window.open('https://forms.gle/cbwuqjFgdoruU1416','_blank')">Apply for founding membership</button>
+    <div class="sc-cta-note">Founding member rate: 20,000 Naira per month · Limited cohort</div>
+  </div>
+
+</div>
+
+<footer class="sc-page-ft">
+  <a href="https://thesystemscircle.com">← Back to thesystemscircle.com</a>
+</footer>
+
+<script>
+function toggle(id){
+  const card = document.getElementById(id);
+  const btn = card.querySelector('.month-trigger');
+  const isOpen = card.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.month-card').forEach(c=>{
+    c.classList.remove('open');
+    c.querySelector('.month-trigger').setAttribute('aria-expanded','false');
+  });
+
+  // Open clicked if it was closed
+  if(!isOpen){
+    card.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+    setTimeout(()=>{
+      card.scrollIntoView({behavior:'smooth',block:'nearest'});
+    },50);
+  }
+}
+</script>
+
+</body>
+</html>
